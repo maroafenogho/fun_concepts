@@ -1,8 +1,8 @@
-import 'package:bootcamp101/app/modules/bmi/input_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,12 +12,45 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BMI Calculator',
+      title: 'Counter riverpod',
       theme: ThemeData(
-          // primarySwatch:AppConstants.mainColor,
-          ),
-      debugShowCheckedModeBanner: false,
-      home: BmiInputScreen(),
+        primarySwatch: Colors.teal,
+      ).copyWith(
+        useMaterial3: true,
+        brightness: Brightness.light,
+      ),
+      home: const MyHomePage(),
+    );
+  }
+}
+
+final counterProvider = StateProvider((ref) => 0);
+
+class MyHomePage extends ConsumerWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      body: Center(child: Consumer(builder: (context, ref, child) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+                'You have touched the button ${ref.watch(counterProvider.state).state} times'),
+            SizedBox(height: 30),
+            TextButton(
+                onPressed: () {
+                  ref.read(counterProvider.state).state = 0;
+                },
+                child: Text('reset'))
+          ],
+        );
+      })),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => ref.read(counterProvider.state).state++,
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
