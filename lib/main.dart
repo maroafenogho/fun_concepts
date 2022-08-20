@@ -1,4 +1,7 @@
+import 'package:bootcamp101/app/modules/weather/screens/weather_screen.dart';
+import 'package:bootcamp101/app/modules/weather/services/api_client.dart';
 import 'package:bootcamp101/clock_state_notifier.dart';
+// import 'package:bootcamp101/modules/app/weather/services/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -45,13 +48,20 @@ class MyHomePage extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('The time is:'),
-              Text(
-                formattedTime,
-                style: Theme.of(context).textTheme.headline1!.copyWith(
-                      color: Colors.blueGrey,
-                      fontSize: 40,
-                      fontWeight: FontWeight.w700,
-                    ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => WeatherHome()));
+                  // ApiClient.getWeather();
+                },
+                child: Text(
+                  formattedTime,
+                  style: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: Colors.blueGrey,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
               ),
               SizedBox(height: 30),
             ],
