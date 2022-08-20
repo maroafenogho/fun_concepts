@@ -26,6 +26,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^10.1.0
   flutter_riverpod: ^1.0.4
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

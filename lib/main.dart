@@ -1,5 +1,7 @@
+import 'package:bootcamp101/clock_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -24,6 +26,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+final clockProvider = StateNotifierProvider<Clock, DateTime>((ref) {
+  return Clock();
+});
 final counterProvider = StateProvider((ref) => 0);
 
 class MyHomePage extends ConsumerWidget {
@@ -31,26 +36,28 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentTime = ref.watch(clockProvider);
+    final formattedTime = DateFormat.Hms().format(currentTime);
     return Scaffold(
-      body: Center(child: Consumer(builder: (context, ref, child) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-                'You have touched the button ${ref.watch(counterProvider.state).state} times'),
-            SizedBox(height: 30),
-            TextButton(
-                onPressed: () {
-                  ref.read(counterProvider.state).state = 0;
-                },
-                child: Text('reset'))
-          ],
+      body: Consumer(builder: (context, ref, child) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('The time is:'),
+              Text(
+                formattedTime,
+                style: Theme.of(context).textTheme.headline1!.copyWith(
+                      color: Colors.blueGrey,
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              SizedBox(height: 30),
+            ],
+          ),
         );
-      })),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => ref.read(counterProvider.state).state++,
-        child: Icon(Icons.add),
-      ),
+      }),
     );
   }
 }
