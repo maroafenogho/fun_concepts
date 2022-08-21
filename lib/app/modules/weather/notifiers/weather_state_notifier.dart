@@ -25,7 +25,7 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
 
       for (final item in weather) {
         weatherList
-            .add(Weather(description: item.description, temp: item.temp - 273));
+            .add(Weather(description: item.description, temp: item.temp - 273, locationName: item.locationName));
         state = state.copyWith(
             status: WeatherStatus.success, weathers: weatherList);
       }

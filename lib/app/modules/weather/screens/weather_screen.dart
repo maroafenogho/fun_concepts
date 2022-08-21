@@ -44,16 +44,30 @@ class WeatherHome extends HookConsumerWidget {
               child: SizedBox(
                 child: Column(
                   children: [
+                    InkWell(
+                      onTap: () {
+                        ref.read(weatherNotifierProvider.notifier).getWeather();
+                      },
+                      child: Text('Reload'),
+                    ),
+                    Text(state.weathers[0].locationName),
                     Text(state.weathers[0].description),
-                    Text(state.weathers[0].temp.toString()),
+                    Text(state.weathers[0].temp.toStringAsFixed(1)),
                   ],
                 ),
               ),
             );
           case WeatherStatus.failure:
-            return const Center(
-              child: SizedBox(
-                child: Text('Error'),
+            return Center(
+              child: Column(
+                children: [
+                  Text('Error'),
+                  InkWell(
+                      onTap: () {
+                        ref.read(weatherNotifierProvider.notifier).getWeather();
+                      },
+                      child: Text('Get Weather')),
+                ],
               ),
             );
         }
