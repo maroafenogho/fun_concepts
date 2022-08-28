@@ -47,7 +47,13 @@ class MyHomePage extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('The time is:'),
+              Text(ref.watch(clockProvider.notifier).about),
+              InkWell(
+                  onTap: () {
+                    ref.read(clockProvider.notifier).about =
+                        "Story of life ${ref.watch(clockProvider.notifier).count++}";
+                  },
+                  child: Text('The time is:')),
               InkWell(
                 onTap: () {
                   Navigator.of(context)
@@ -63,7 +69,41 @@ class MyHomePage extends ConsumerWidget {
                       ),
                 ),
               ),
-              SizedBox(height: 30),
+              Container(
+                  margin: EdgeInsets.all(20),
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Colors.yellow,
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        bottom: 20,
+                        left: -10,
+                        child: Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: -10,
+                        right: -20,
+                        child: Container(
+                          height: 45,
+                          width: 45,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.green,
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
             ],
           ),
         );

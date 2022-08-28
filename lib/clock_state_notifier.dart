@@ -10,6 +10,8 @@ class Clock extends StateNotifier<DateTime> {
     });
   }
   late final Timer _timer;
+  String about = '';
+  int count = 1;
 
   @override
   void dispose() {
