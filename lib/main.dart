@@ -1,3 +1,4 @@
+import 'package:bootcamp101/app/modules/auth/views/sign_up.dart';
 import 'package:bootcamp101/app/modules/weather/screens/weather_screen.dart';
 import 'package:bootcamp101/app/modules/weather/services/api_client.dart';
 import 'package:bootcamp101/clock_state_notifier.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter riverpod',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ).copyWith(
@@ -52,6 +54,10 @@ class MyHomePage extends ConsumerWidget {
                   onTap: () {
                     ref.read(clockProvider.notifier).about =
                         "Story of life ${ref.watch(clockProvider.notifier).count++}";
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => RegisterScreen())));
                   },
                   child: Text('The time is:')),
               InkWell(
@@ -70,40 +76,48 @@ class MyHomePage extends ConsumerWidget {
                 ),
               ),
               Container(
-                  margin: EdgeInsets.all(20),
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Colors.yellow,
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        bottom: 20,
-                        left: -10,
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.green,
+                margin: EdgeInsets.all(20),
+                height: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  color: Colors.yellow,
+                ),
+                child: Container(
+                    // margin: EdgeInsets.all(20),
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Colors.yellow,
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          bottom: 20,
+                          left: -10,
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.green,
+                            ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        top: -10,
-                        right: -20,
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.green,
+                        Positioned(
+                          top: -10,
+                          right: -20,
+                          child: Container(
+                            height: 45,
+                            width: 45,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.green,
+                            ),
                           ),
-                        ),
-                      )
-                    ],
-                  )),
+                        )
+                      ],
+                    )),
+              ),
             ],
           ),
         );
