@@ -21,4 +21,14 @@ class AuthRepository {
     }
     return userList;
   }
+
+  Future<List<User>> signIn(
+      {required String email, required String password}) async {
+    final List<User> userList = [];
+    final signIn = await authApiClient.signIn(email: email, password: password);
+    for (final item in signIn) {
+      userList.add(User(name: item.name, email: item.email));
+    }
+    return userList;
+  }
 }

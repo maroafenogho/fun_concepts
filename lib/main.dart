@@ -1,3 +1,4 @@
+import 'package:bootcamp101/app/modules/auth/views/login_screen.dart';
 import 'package:bootcamp101/app/modules/auth/views/sign_up.dart';
 import 'package:bootcamp101/app/modules/weather/screens/weather_screen.dart';
 import 'package:bootcamp101/app/modules/weather/services/api_client.dart';
@@ -75,48 +76,56 @@ class MyHomePage extends ConsumerWidget {
                       ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.all(20),
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  color: Colors.yellow,
-                ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: ((context) {
+                    return LoginScreen();
+                  })));
+                },
                 child: Container(
-                    // margin: EdgeInsets.all(20),
-                    height: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.yellow,
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          bottom: 20,
-                          left: -10,
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.green,
+                  margin: EdgeInsets.all(20),
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Colors.yellow,
+                  ),
+                  child: Container(
+                      // margin: EdgeInsets.all(20),
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: Colors.yellow,
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            bottom: 20,
+                            left: -10,
+                            child: Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.green,
+                              ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          top: -10,
-                          right: -20,
-                          child: Container(
-                            height: 45,
-                            width: 45,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.green,
+                          Positioned(
+                            top: -10,
+                            right: -20,
+                            child: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.green,
+                              ),
                             ),
-                          ),
-                        )
-                      ],
-                    )),
+                          )
+                        ],
+                      )),
+                ),
               ),
             ],
           ),

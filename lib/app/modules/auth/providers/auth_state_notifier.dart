@@ -16,6 +16,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this._authRepository) : super(AuthState.initial());
   final AuthRepository _authRepository;
 
+  bool success = false;
+
   reset() {
     state = state.copyWith(status: AuthStatus.initial);
   }
@@ -26,10 +28,34 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final userList = <User>[];
       final signUp = await _authRepository.signUp(
           name: name, email: email, password: password);
-      for (final user in signUp) {
-        userList.add(User(name: user.name, email: user.email));
+      if (signUp.isEmpty) {
+        state = state.copyWith(status: AuthStatus.failed, users: userList);
+      } else {
+        for (final user in signUp) {
+          userList.add(User(name: user.name, email: user.email));
 
-        state = state.copyWith(status: AuthStatus.success, users: userList);
+          state = state.copyWith(status: AuthStatus.success, users: userList);
+        }
+      }
+    } on Exception {
+      state = state.copyWith(status: AuthStatus.failed);
+    }
+  }
+
+  signIn(String email, String password) async {
+    state = state.copyWith(status: AuthStatus.loading);
+    try {
+      final userList = <User>[];
+      final signIn =
+          await _authRepository.signIn(email: email, password: password);
+      if (signIn.isEmpty) {
+        state = state.copyWith(status: AuthStatus.failed, users: userList);
+      } else {
+        for (final user in signIn) {
+          userList.add(User(name: user.name, email: user.email));
+          success = true;
+          state = state.copyWith(status: AuthStatus.success, users: userList);
+        }
       }
     } on Exception {
       state = state.copyWith(status: AuthStatus.failed);

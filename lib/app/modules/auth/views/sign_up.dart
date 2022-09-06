@@ -1,5 +1,6 @@
 import 'package:bootcamp101/app/modules/auth/providers/auth_state.dart';
 import 'package:bootcamp101/app/modules/auth/providers/auth_state_notifier.dart';
+import 'package:bootcamp101/app/modules/auth/views/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -45,24 +46,41 @@ class RegisterScreen extends StatelessWidget {
             final state = ref.watch(authNotifierProvider);
             switch (state.status) {
               case AuthStatus.initial:
-                return ElevatedButton(
-                  onPressed: () {
-                    ref.read(authNotifierProvider.notifier).signUp(
-                        nameController.text,
-                        emailController.text,
-                        passwordController.text);
-                  },
-                  child: Text('CREATE ACCOUNT'),
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ref.read(authNotifierProvider.notifier).signUp(
+                          nameController.text,
+                          emailController.text,
+                          passwordController.text);
+                    },
+                    child: Text('CREATE ACCOUNT'),
+                  ),
                 );
 
               case AuthStatus.loading:
-                return ElevatedButton(
-                  onPressed: () {},
-                  child: CircularProgressIndicator(),
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 10)),
+                    onPressed: () {},
+                    child: CircularProgressIndicator(),
+                  ),
                 );
 
               case AuthStatus.success:
-                return Text('ACCOUNT CREATED');
+                return InkWell(
+                    onTap: () {
+                      ref.read(authNotifierProvider.notifier).reset();
+
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: ((context) {
+                        return LoginScreen();
+                      })));
+                    },
+                    child: Text('ACCOUNT CREATED\nGo to Login Page'));
 
               case AuthStatus.failed:
                 return InkWell(
