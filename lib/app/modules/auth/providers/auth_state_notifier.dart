@@ -17,7 +17,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository _authRepository;
 
   bool success = false;
-
+  bool accountCreated = false;
+  String email = '';
   reset() {
     state = state.copyWith(status: AuthStatus.initial);
   }
@@ -28,14 +29,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final userList = <User>[];
       final signUp = await _authRepository.signUp(
           name: name, email: email, password: password);
-      if (signUp.isEmpty) {
-        state = state.copyWith(status: AuthStatus.failed, users: userList);
-      } else {
-        for (final user in signUp) {
-          userList.add(User(name: user.name, email: user.email));
-
-          state = state.copyWith(status: AuthStatus.success, users: userList);
-        }
+      for (final user in signUp) {
+        userList.add(User(name: user.name, email: user.email));
+        accountCreated = true;
+        state = state.copyWith(status: AuthStatus.success, users: userList);
       }
     } on Exception {
       state = state.copyWith(status: AuthStatus.failed);
@@ -52,7 +49,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(status: AuthStatus.failed, users: userList);
       } else {
         for (final user in signIn) {
-          userList.add(User(name: user.name, email: user.email));
+          userList
+              .add(User(name: user.name, email: user.email, token: user.token));
           success = true;
           state = state.copyWith(status: AuthStatus.success, users: userList);
         }

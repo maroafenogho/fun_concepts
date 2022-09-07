@@ -24,8 +24,10 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
       final weather = await _weatherRepository.getWeather();
 
       for (final item in weather) {
-        weatherList
-            .add(Weather(description: item.description, temp: item.temp - 273, locationName: item.locationName));
+        weatherList.add(Weather(
+            description: item.description,
+            temp: item.temp - 273,
+            locationName: item.locationName));
         state = state.copyWith(
             status: WeatherStatus.success, weathers: weatherList);
       }

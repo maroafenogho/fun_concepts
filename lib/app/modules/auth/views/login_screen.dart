@@ -1,5 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bootcamp101/app/modules/auth/providers/auth_state.dart';
 import 'package:bootcamp101/app/modules/auth/providers/auth_state_notifier.dart';
+import 'package:bootcamp101/app/modules/house/providers/house_state_notifier.dart';
+import 'package:bootcamp101/app/modules/house/views/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,8 +22,20 @@ class LoginScreen extends StatelessWidget {
             child: Padding(
       padding: const EdgeInsets.all(30.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text(
+            'Login',
+            style: TextStyle(
+              color: Colors.black.withAlpha(150),
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
+          ),
           TextFormField(
             controller: emailController,
             keyboardType: TextInputType.emailAddress,
@@ -49,6 +65,7 @@ class LoginScreen extends StatelessWidget {
               case AuthStatus.initial:
                 return SizedBox(
                   width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.09,
                   child: ElevatedButton(
                     onPressed: () async {
                       await ref.read(authNotifierProvider.notifier).signIn(
@@ -56,15 +73,27 @@ class LoginScreen extends StatelessWidget {
 
                       if (ref.watch(authNotifierProvider.notifier).success ==
                           true) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text('Yay')));
+                        ref.read(houseNotifierProvider.notifier).getHouses();
                         Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (_) => WeatherHome()),
+                            MaterialPageRoute(builder: (_) => Homepage()),
                             (route) => false);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Logged in failed')));
                       }
                     },
-                    child: Text('LOGIN'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black,
+                    ),
+                    child: const Text(
+                      'LOGIN',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 );
 
@@ -73,6 +102,7 @@ class LoginScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                        primary: Colors.black,
                         padding: EdgeInsets.symmetric(vertical: 10)),
                     onPressed: () {},
                     child: CircularProgressIndicator(),
@@ -80,12 +110,16 @@ class LoginScreen extends StatelessWidget {
                 );
 
               case AuthStatus.success:
-                return InkWell(
-                    onTap: () {
-                      ref.read(authNotifierProvider.notifier).reset();
-                    },
-                    child: Text('LOGIN SUCCESSFUL'));
-
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.black,
+                        padding: EdgeInsets.symmetric(vertical: 10)),
+                    onPressed: () {},
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               case AuthStatus.failed:
                 return InkWell(
                     onTap: () {

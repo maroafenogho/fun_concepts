@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:bootcamp101/app/modules/auth/views/login_screen.dart';
 import 'package:bootcamp101/app/modules/auth/views/sign_up.dart';
+import 'package:bootcamp101/app/modules/onboarding/views/screens/onboarding.dart';
 import 'package:bootcamp101/app/modules/weather/screens/weather_screen.dart';
 import 'package:bootcamp101/app/modules/weather/services/api_client.dart';
 import 'package:bootcamp101/clock_state_notifier.dart';
@@ -9,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -19,15 +23,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Counter riverpod',
+      title: 'E-dwell',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ).copyWith(
         useMaterial3: true,
-        brightness: Brightness.light,
+        brightness: Brightness.dark,
       ),
-      home: const MyHomePage(),
+      home: const OnboardingScreen(),
     );
   }
 }
@@ -80,7 +84,7 @@ class MyHomePage extends ConsumerWidget {
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: ((context) {
-                    return LoginScreen();
+                    return OnboardingScreen();
                   })));
                 },
                 child: Container(
@@ -132,5 +136,14 @@ class MyHomePage extends ConsumerWidget {
         );
       }),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

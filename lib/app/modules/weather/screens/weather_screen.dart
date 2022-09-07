@@ -13,6 +13,7 @@ class WeatherHome extends HookConsumerWidget {
         title: Text('Weather'),
       ),
       body: Consumer(builder: ((context, ref, child) {
+        // ref.read(weatherNotifierProvider.notifier).getWeather();
         final state = ref.watch(weatherNotifierProvider);
 
         switch (state.status) {
