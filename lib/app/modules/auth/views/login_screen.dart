@@ -7,8 +7,6 @@ import 'package:bootcamp101/app/modules/house/views/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../weather/screens/weather_screen.dart';
-
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   final nameController = TextEditingController();
